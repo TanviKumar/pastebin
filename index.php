@@ -1,20 +1,88 @@
-<?php
-require('db.php');
-include("auth.php");
-?>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>Welcome Home</title>
-<link rel="stylesheet" href="style.css" />
-</head>
-<body>
-<div class="form">
-<p>Welcome <?php echo $_SESSION['username']; ?>!</p>
+	<head>
+		<meta charset="utf-8">
+		<title>Welcome Home</title>
+		<link rel="stylesheet" href="style.css" />
+		<?php
+		include("auth.php");
+		require('db.php');
+		if(isset($_POST['submit'])){
 
-<p><a href="dashboard.php">Dashboard</a></p>
-<a href="logout.php">Logout</a>
-</div>
-</body>
+			if(isset($_POST["title"])){
+				$title = $_POST["title"];
+			}
+
+			if(isset($_POST["snippet"])){
+				$snippet = $_POST["snippet"];
+			}
+			
+			$username = $_SESSION['username'];
+
+			if(isset($_POST["privacy"])){
+				$privacy=1;
+			}
+			else{
+				$privacy=0;
+			}
+
+			if(isset($_POST["language"])){
+				$language=$_POST["language"];
+
+			}
+
+			if(isset($_POST["anonimity"])){
+				$anonimity=1;
+			}
+			else
+				$anonimity=0;
+
+
+          /*  if($stmt= $con->prepare("INSERT into snippets (username,title,snippet,language,privacy,anonimity) VALUES (?,?,?,?,?,?)")){
+                    $stmt->bind_param("ssssii", $username,$title, $snippet,$language, $privacy,$anonimity);
+                    $stmt->execute();
+                    $stmt->close();
+                }*/
+            $sql= "INSERT into `snippets` (title,snippet,language,privacy,anonimity) VALUES ($title, $snippet,$language, $privacy,$anonimity)";
+            mysqli_query($con, $sql);
+            /*  else{
+              	echo "fail";
+              }*/
+     		/*if($result){
+     			echo "Sucessfully added";
+     		}
+	        else{
+	          echo mysqli_error($con);
+	        }*/
+
+
+		}else{
+
+			echo "Fail";
+		};
+		?>
+	</head>
+	<body>
+		<div class="form">
+		<form action="" method="post" name="snippetForm">
+			<p>Welcome!</p>
+			<input name="title" type="text" placeholder="Title" required>
+			<br>
+			<br>
+			<textarea rows="25" cols="50" name="snippet" placeholder=" Enter Snippet"></textarea>
+			<br>
+			<br>
+			<p> Keep it Private : <input type = "radio" name = "privacy"></p>
+      		<p> Anonymous : <input type = "radio" name = "anonimity"></p>	
+
+			<input type="text" name="language" placeholder="language" required>
+			<br>
+			<br>
+			<input name="submit" type="submit" value="Create" required>
+			<br>	
+			<br>	
+			<a href="logout.php">Logout</a>
+		</form>
+		</div>
+	</body>
 </html>
