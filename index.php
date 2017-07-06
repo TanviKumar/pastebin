@@ -7,7 +7,8 @@
 		<?php
 		include("auth.php");
 		require('db.php');
-		if(isset($_POST['submit'])){
+		if(isset($_REQUEST['submit'])){
+			
 
 			if(isset($_POST["title"])){
 				$title = $_POST["title"];
@@ -31,34 +32,23 @@
 
 			}
 
-			if(isset($_POST["anonimity"])){
-				$anonimity=1;
+			if(isset($_POST["anonymity"])){
+				$anonymity=1;
 			}
-			else
-				$anonimity=0;
+			else{
+				$anonymity=0;
+			}
 
-
-          /*  if($stmt= $con->prepare("INSERT into snippets (username,title,snippet,language,privacy,anonimity) VALUES (?,?,?,?,?,?)")){
-                    $stmt->bind_param("ssssii", $username,$title, $snippet,$language, $privacy,$anonimity);
+            if($stmt= $con->prepare("INSERT into `snippets` (`username`, `title`, `snippet`, `language`, `privacy`, `anonimity`) VALUES (?,?,?,?,?,?)")){
+                    $stmt->bind_param("ssssii", $username, $title, $snippet, $language,$privacy,$anonymity);
                     $stmt->execute();
                     $stmt->close();
-                }*/
-            $sql= "INSERT into `snippets` (title,snippet,language,privacy,anonimity) VALUES ($title, $snippet,$language, $privacy,$anonimity)";
-            mysqli_query($con, $sql);
-            /*  else{
+                }
+            else{
               	echo "fail";
-              }*/
-     		/*if($result){
-     			echo "Sucessfully added";
-     		}
-	        else{
-	          echo mysqli_error($con);
-	        }*/
-
-
+              }
+              
 		}else{
-
-			echo "Fail";
 		};
 		?>
 	</head>
@@ -73,7 +63,7 @@
 			<br>
 			<br>
 			<p> Keep it Private : <input type = "radio" name = "privacy"></p>
-      		<p> Anonymous : <input type = "radio" name = "anonimity"></p>	
+      		<p> Anonymous : <input type = "radio" name = "anonymity"></p>	
 
 			<input type="text" name="language" placeholder="language" required>
 			<br>
